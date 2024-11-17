@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Danh sách sản phẩm</h1>
+    <ul>
+        {% for product in products.items %}
+            <li>
+                <h2>{{ product.name }}</h2>
+                <p>{{ product.description }}</p>
+                <p>Giá: {{ product.price }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="pagination">
+        {% if products.has_prev %}
+            <a href="{{ url_for('index', page=products.prev_num) }}">Previous</a>
+        {% endif %}
+
+        {% for page_num in products.iter_pages() %}
+            {% if page_num %}
+                {% if page_num == products.page %}
+                    <a href="#" class="active">{{ page_num }}</a>
+                {% else %}
+                    <a href="{{ url_for('index', page=page_num) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+                <span>...</span>
+            {% endif %}
+        {% endfor %}
+
+        {% if products.has_next %}
+            <a href="{{ url_for('index', page=products.next_num) }}">Next</a>
+        {% endif %}
+    </div>
+{% endblock %}
